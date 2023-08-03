@@ -1,0 +1,11 @@
+spack:
+  view:
+    default:
+      root: /opt/cray/pe
+      projections:
+        cray-cti: cti/{version}
+      link: all
+      link_type: copy
+  specs:
+  - cray-cti
+  compilers: []
