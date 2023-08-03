@@ -41,10 +41,10 @@ class CrayCti(AutotoolsPackage):
     depends_on("automake", type="build", when="build_system=autotools")
     depends_on("libtool", type="build", when="build_system=autotools")
     depends_on("boost")
-    depends_on("dyninst")
+    depends_on("dyninst@12.3.0")
     depends_on("libiconv")
     depends_on("libarchive~iconv")
-    depends_on("libssh2")
+    depends_on("libssh2@1.11.0")
 
     def patch(self):
         # Patch pkgconfig files
@@ -60,7 +60,7 @@ class CrayCti(AutotoolsPackage):
             f"--with-dyninst={spec['dyninst'].prefix}",
             f"--with-libiconv={spec['libiconv'].prefix}",
             f"--with-libarchive={spec['libarchive'].prefix}",
-            f"--with-libssh2-pc={spec['libssh2'].prefix}/lib64/pkgconfig/libssh2.pc",
+            f"--with-libssh2-pc={spec['libssh2'].prefix}/lib/pkgconfig/libssh2.pc",
             f"DYNINST_CFLAGS=-I{spec['dyninst'].prefix}/include",
             f"DYNINST_LIBS=-L{spec['dyninst'].prefix}/lib -Wl,-rpath,{spec['dyninst'].prefix}/lib",
         ]

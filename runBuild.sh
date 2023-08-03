@@ -32,6 +32,7 @@ if [[ ! -d $CTI_INSTALL_DIR ]]; then
 	spack install --keep-stage cray-cti
 fi
 
+CTI_INSTALL_DIR=$(spack find --format "{prefix}" cray-cti | head -n1)
 echo "cray-cti installed at: $CTI_INSTALL_DIR"
 
 # Example build with frontend library
