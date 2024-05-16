@@ -29,12 +29,12 @@ class CrayCti(AutotoolsPackage):
     """alongside applications on HPC systems."""
 
     homepage = "https://github.com/common-tools-interface/cti"
-    git = "git@github.hpe.com:andrew-dangelo/cdst-CTI.git"
+    git = "https://github.com/common-tools-interface/cti.git"
 
     # maintainers("ardangelo", "johnlvogt")
 
     # FIXME: Add proper versions and checksums here.
-    version("2.18.1.2", submodules=True)
+    version("2.18.4", submodules=False)
 
     # Build dependencies
     depends_on("autoconf", type="build", when="build_system=autotools")
@@ -52,6 +52,9 @@ class CrayCti(AutotoolsPackage):
             "pkgconfig/common_tools_fe.pc.in", string=True)
         filter_file(r"${&libdir&}", r"-Wl,-rpath,${libdir} -L${libdir}",
             "pkgconfig/common_tools_be.pc.in", string=True)
+        # Spack rewrites rpath, checksums will fail
+        filter_file(r"#ifdef HAVE_CHECKSUM", r"#if 0",
+            "src/frontend/checksum/libchecksum.cpp", string=True)
 
     def configure_args(self):
         spec = self.spec
@@ -61,6 +64,9 @@ class CrayCti(AutotoolsPackage):
             f"--with-libiconv={spec['libiconv'].prefix}",
             f"--with-libarchive={spec['libarchive'].prefix}",
             f"--with-libssh2-pc={spec['libssh2'].prefix}/lib/pkgconfig/libssh2.pc",
+            f"--enable-pals=no",
+            f"--enable-alps=no",
+            f"--with-flux=/usr/include",
             f"DYNINST_CFLAGS=-I{spec['dyninst'].prefix}/include",
             f"DYNINST_LIBS=-L{spec['dyninst'].prefix}/lib -Wl,-rpath,{spec['dyninst'].prefix}/lib",
         ]

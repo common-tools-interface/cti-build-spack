@@ -67,6 +67,9 @@ main(int argc, char **argv)
 
         case CTI_WLM_NONE:
             fprintf(stdout, "No supported workload manager detected\n");
+            if (cti_error_str() != NULL) {
+                fprintf(stdout, "%s\n", cti_error_str());
+            }
             break;
     }
 
