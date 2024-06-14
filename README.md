@@ -2,7 +2,7 @@
 
 Spack recipe for [Common Tools Interface](https://github.com/common-tools-interface/cti).
 
-Includes Dockerfile that inherits system Flux installation and builds CTI recipe.
+This package includes Dockerfile that inherits system Flux installation and builds CTI recipe.
 
 Flux headers are copied from `/usr/include/flux` to build CTI. If Flux headers are updated, the container should be rebuilt.
 
@@ -20,3 +20,5 @@ Test files need to be available to the host system as well for proper Flux launc
 		source /cti-build-spack/load-cti.sh && \
 		cp -r tests tests-run && cd tests-run && \
 		./runTests.sh"
+
+	rm -r tests-run
