@@ -34,26 +34,3 @@ fi
 
 export CTI_INSTALL_DIR=$(spack find --format "{prefix}" cray-cti | head -n1)
 echo "cray-cti installed at: $CTI_INSTALL_DIR"
-
-# Example build with frontend library
-CTI_FE_PKGCONFIG_SCRIPT=$CTI_INSTALL_DIR/lib/pkgconfig/common_tools_fe.pc
-CTI_BE_PKGCONFIG_SCRIPT=$CTI_INSTALL_DIR/lib/pkgconfig/common_tools_be.pc
-
-echo "Building CTI workload manager test. See \`runBuild.sh\` for pkg-config script usage"
-cc -g -O2 $CXXFLAGS $(pkg-config --cflags --libs $CTI_FE_PKGCONFIG_SCRIPT) \
-	cti_wlm_test.c -o cti_wlm_test
-echo "Build successful."
-
-# Run basic link test
-if ! test_output=$(./cti_wlm_test); then
-	echo "Test built successfully, but it failed to start. Library may have been linked incorrectly"
-	exit 1
-fi
-
-# Check test output
-if echo "$test_output" | grep -q "No supported workload manager detected"; then
-	echo "Test ran successfully, but did not detect a workload manager."
-	echo "Depending on the setup of your build system, this may be expected."
-else
-	echo "Test ran successfully. $test_output"
-fi

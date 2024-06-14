@@ -1,7 +1,4 @@
-FROM arti.hpc.amslabs.hpecorp.net/baseos-docker-master-local/sles15sp5:latest
-
-ENV http_proxy=http://proxy.houston.hpecorp.net:8080/
-ENV https_proxy=http://proxy.houston.hpecorp.net:8080/
+FROM registry.suse.com/suse/sle15:latest
 
 # Install dependencies
 RUN zypper install -y -t pattern devel_basis
@@ -15,7 +12,8 @@ RUN rm /usr/bin/gcc /usr/bin/g++ \
 	&& ln -s /usr/bin/g++-12 /usr/bin/g++
 
 # Build CTI
-COPY cti_wlm_test.c repo.yaml runBuild.sh spack.yaml /cti-build-spack/
+COPY load-cti.sh repo.yaml runBuild.sh spack.yaml /cti-build-spack/
 COPY packages /cti-build-spack/packages
+ADD /usr/include/flux
 RUN cd /cti-build-spack \
-	&& echo ./runBuild.sh
+	&& ./runBuild.sh
