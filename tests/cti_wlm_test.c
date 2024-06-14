@@ -3,7 +3,7 @@
  *          tools interface which will gather information from the WLM about a
  *          previously launched job.
  *
- * Copyright 2012-2023 Hewlett Packard Enterprise Development LP.
+ * Copyright 2012-2020 Hewlett Packard Enterprise Development LP.
  * SPDX-License-Identifier: Linux-OpenIB
  ******************************************************************************/
 
@@ -42,8 +42,6 @@ main(int argc, char **argv)
      */
     mywlm = cti_current_wlm();
 
-    fprintf(stdout, "CTI library was successfully initalized\n");
-
     // Print out the wlm type using the defined text for each WLM type.
     switch (mywlm) {
         case CTI_WLM_SLURM:
@@ -62,16 +60,13 @@ main(int argc, char **argv)
             fprintf(stdout, "%s WLM type.\n", CTI_WLM_TYPE_FLUX_STR);
             break;
         case CTI_WLM_MOCK:
-            fprintf(stdout, "Mock WLM type.\n");
-            break;
-
         case CTI_WLM_NONE:
-            fprintf(stdout, "No supported workload manager detected\n");
-            if (cti_error_str() != NULL) {
-                fprintf(stdout, "%s\n", cti_error_str());
-            }
-            break;
+            fprintf(stderr, "Error: Unsupported WLM in use!\n");
+            assert(0);
+            return 1;
     }
+    // emit "Launch complete" for test harness timeout detection
+    fprintf(stderr, "Safe from launch timeout.\n");
 
     return 0;
 }

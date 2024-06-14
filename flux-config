@@ -35,6 +35,7 @@ def main():
 
 	# Default mounts
 	mount_paths = [
+		os.getcwd(),
 		os.getenv("HOME"),
 		"/usr/bin/flux",
 		"/usr/etc/flux",
